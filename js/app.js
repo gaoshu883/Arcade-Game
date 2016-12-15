@@ -1,26 +1,20 @@
 // Enemies our player must avoid
+// @param {number} x - The x coordinate of enemy position
+// @param {number} y - The y coordinate of enemy position
+// @param {number} speed - The speed of enemy moves along the street
 var Enemy = function(x,y,speed) {
-    // Variables applied to each of our instances go here,
-    // we've provided one for you to get started
     this.x = x;
     this.y = y;
     this.speed = speed;
-    // The image/sprite for our enemies, this uses
-    // a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
 };
 
 // Update the enemy's position, required method for game
-// Parameter: dt, a time delta between ticks
+// @param {number} dt - A time delta between ticks
 Enemy.prototype.update = function(dt) {
-    // You should multiply any movement by the dt parameter
-    // which will ensure the game runs at the same speed for
-    // all computers.
-
-    //更新敌人位置
     this.x += this.speed * dt;
 
-    //当敌人跑出边界后，反向移动
+    //When enemies run out of canvas, their speed direction will reversed.
     if (this.x > 555) {
         this.sprite = 'images/enemy-bug-r.png';
         this.speed = -this.speed;
@@ -36,13 +30,12 @@ Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-// Now write your own player class
-// This class requires an update(), render() and
-// a handleInput() method.
+// Player in the game
+// @param {number} x - The x coordinate of player initial position
+// @param {number} y - The y coordinate of player initial position
 var Player = function(x,y) {
     this.x = x;
     this.y = y;
-    //玩家速度，用来控制玩家的移动方向
     this.dx = 0;
     this.dy = 0;
     this.sprite = 'images/char-boy.png';
@@ -50,24 +43,18 @@ var Player = function(x,y) {
 
 //Update the player's position
 Player.prototype.update = function() {
-
-    //更新玩家当前位置
     this.x += this.dx;
     this.y += this.dy;
 
-    //判断玩家是否越界，因为sprite图片周围有透明区域，所以要把所有透明区域排除在外
+    //Ensure that the player is within the valid area
     if (this.x < -16) {
         this.x = -16;
     }
     if (this.x > 420) {
         this.x = 420;
     }
-    if (this.y > 406) {
-        this.y = 406;
-    }
-    if (this.y < 0) {//当玩家到达河岸，游戏重新开始，玩家回到初始位置
-        this.x = 200;
-        this.y = 380;
+    if (this.y > 356) {
+        this.y = 356;
     }
 };
 
@@ -78,12 +65,11 @@ Player.prototype.render = function() {
 
 //Handle with the user input
 Player.prototype.handleInput = function(key) {
-
-    //首先重置玩家运动速度为0
+    //At first, reset the speed of player to zero
     this.dx = 0;
     this.dy = 0;
 
-    //根据不同的按键，修改玩家移动方向
+    //Switch the speed direction of player based on which key pressed
     switch(key) {
         case 'right':
             this.dx = 2;
@@ -102,14 +88,19 @@ Player.prototype.handleInput = function(key) {
     }
 };
 
-// Now instantiate your objects.
-// Place all enemy objects in an array called allEnemies
-// Place the player object in a variable called player
-var allEnemies = [new Enemy(-101,60,80), new Enemy(-101,142,150), new Enemy(-101,224,200), new Enemy(-101,60,120), new Enemy(-101,142,280), new Enemy(-101,224,140)];//输入敌人初始位置和基础速度
-var player = new Player(200,380);//输入玩家初始位置
+// Instantiate enemies and player objects.
+var allEnemies = [
+    new Enemy(-101,10,80),
+    new Enemy(-101,92,150),
+    new Enemy(-101,174,200),
+    new Enemy(-101,10,120),
+    new Enemy(-101,92,280),
+    new Enemy(-101,174,140)
+];
+var player = new Player(200,330);
 
 // This listens for key presses and sends the keys to your
-// Player.handleInput() method. You don't need to modify this.
+// Player.handleInput() method.
 document.addEventListener('keydown', function(e) {
     var allowedKeys = {
         37: 'left',
@@ -121,7 +112,7 @@ document.addEventListener('keydown', function(e) {
     player.handleInput(allowedKeys[e.keyCode]);
 });
 
-//监听keyup事件，当松开方向键的时候，玩家停止运动
+// Listen for key press and make the player stop
 document.addEventListener('keyup', function(e) {
     player.dx = 0;
     player.dy = 0;
