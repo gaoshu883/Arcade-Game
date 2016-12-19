@@ -119,7 +119,7 @@ function engine() {
         return true;
     }
 
-    /* This function initially draws the "game level", it will then call
+    /* This function initially draws the 'game level', it will then call
      * the renderEntities function.
      */
     function render() {
@@ -142,7 +142,7 @@ function engine() {
 
         /* Loop through the number of rows and columns we've defined above
          * and, using the rowImages array, draw the correct image for that
-         * portion of the "grid"
+         * portion of the 'grid'
          */
         for (row = 0; row < numRows; row++) {
             for (col = 0; col < numCols; col++) {
@@ -184,9 +184,9 @@ function start() {
     ctx.fillStyle = '#363636';
     ctx.font = '20px Impact';
     ctx.textAlign = 'center';
-    ctx.fillText("You are in danger...", canvas.width / 2, 50);
-    ctx.fillText("Only escape the enemies and cross the street", canvas.width / 2, 80);
-    ctx.fillText("to the water, you can be saved...", canvas.width / 2, 110);
+    ctx.fillText('You are in danger...', canvas.width / 2, 50);
+    ctx.fillText('Only escape the enemies and cross the street', canvas.width / 2, 80);
+    ctx.fillText('to the water, you can be saved...', canvas.width / 2, 110);
 
     // Draw start button
     startBtn.render();
@@ -257,10 +257,10 @@ function win() {
     ctx.fillStyle = '#5b5';
     ctx.lineWidth = 3;
     ctx.textAlign = 'center';
-    ctx.fillText("CONGRATULATIONS!", canvas.width / 2, 170);
-    ctx.strokeText("CONGRATULATIONS!", canvas.width / 2, 170);
-    ctx.fillText("YOU WIN!", canvas.width / 2, 250);
-    ctx.strokeText("YOU WIN!", canvas.width / 2, 250);
+    ctx.fillText('CONGRATULATIONS!', canvas.width / 2, 170);
+    ctx.strokeText('CONGRATULATIONS!', canvas.width / 2, 170);
+    ctx.fillText('YOU WIN!', canvas.width / 2, 250);
+    ctx.strokeText('YOU WIN!', canvas.width / 2, 250);
 
     // Draw play-again button
     againBtn.render();
