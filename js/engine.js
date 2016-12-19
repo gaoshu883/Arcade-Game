@@ -314,8 +314,6 @@ canvas.addEventListener('mousemove', function(e) {
             canvas.classList.remove('focused');
             againBtn.render();
         }
-    } else {
-        canvas.classList.remove('focused');
     }
 });
 
@@ -328,5 +326,6 @@ canvas.addEventListener('click', function(e) {
         gameStart = true;
         startBtn.activated = true;
         engine();
+        canvas.classList.remove('focused');
     }
 });
