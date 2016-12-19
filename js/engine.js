@@ -301,10 +301,14 @@ canvas.addEventListener('mousemove', function(e) {
     if (gameStart === false && startBtn.activated === false) {
         if ((x > startBtn.x && x < startBtn.x + startBtn.width) && (y > startBtn.y && y < startBtn.y + startBtn.height)) {
             canvas.classList.add('focused');
-            startBtnActivated.render();
+            Resources.onReady(function() {
+                startBtnActivated.render();
+            });
         } else {
             canvas.classList.remove('focused');
-            startBtn.render();
+            Resources.onReady(function() {
+                startBtn.render();
+            });
         }
     } else if (gameStart === false && againBtn.activated === false) {
         if ((x > againBtn.x && x < againBtn.x + againBtn.width) && (y > againBtn.y && y < againBtn.y + againBtn.height)) {
