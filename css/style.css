@@ -1,11 +1,15 @@
 html {
     height: 100vh;
     text-align: center;
-    background: linear-gradient(to bottom, #bdceff, white);
+    background-color: #363636;
 }
 
 .title {
     font-size: 20px;
     font-family: Impact;
     color: #5b5;
+}
+
+.focused {
+    cursor: pointer;
 }

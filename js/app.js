@@ -2,7 +2,7 @@
 // @param {number} x - The x coordinate of enemy position
 // @param {number} y - The y coordinate of enemy position
 // @param {number} speed - The speed of enemy moves along the street
-var Enemy = function(x,y,speed) {
+var Enemy = function(x, y, speed) {
     this.x = x;
     this.y = y;
     this.speed = speed;
@@ -14,7 +14,7 @@ var Enemy = function(x,y,speed) {
 Enemy.prototype.update = function(dt) {
     this.x += this.speed * dt;
 
-    //When enemies run out of canvas, their speed direction will reversed.
+    // When enemies run out of canvas, their speed direction will reversed.
     if (this.x > 555) {
         this.sprite = 'images/enemy-bug-r.png';
         this.speed = -this.speed;
@@ -33,7 +33,7 @@ Enemy.prototype.render = function() {
 // Player in the game
 // @param {number} x - The x coordinate of player initial position
 // @param {number} y - The y coordinate of player initial position
-var Player = function(x,y) {
+var Player = function(x, y) {
     this.x = x;
     this.y = y;
     this.dx = 0;
@@ -41,12 +41,12 @@ var Player = function(x,y) {
     this.sprite = 'images/char-boy.png';
 };
 
-//Update the player's position
+// Update the player's position
 Player.prototype.update = function() {
     this.x += this.dx;
     this.y += this.dy;
 
-    //Ensure that the player is within the valid area
+    // Ensure that the player is within the valid area
     if (this.x < -16) {
         this.x = -16;
     }
@@ -58,19 +58,19 @@ Player.prototype.update = function() {
     }
 };
 
-//Draw the player on the screen
+// Draw the player on the screen
 Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-//Handle with the user input
+// Handle with the user input
 Player.prototype.handleInput = function(key) {
-    //At first, reset the speed of player to zero
+    // At first, reset the speed of player to zero
     this.dx = 0;
     this.dy = 0;
 
-    //Switch the speed direction of player based on which key pressed
-    switch(key) {
+    // Switch the speed direction of player based on which key pressed
+    switch (key) {
         case 'right':
             this.dx = 2;
             break;
@@ -88,16 +88,42 @@ Player.prototype.handleInput = function(key) {
     }
 };
 
-// Instantiate enemies and player objects.
+// Button to start game
+// @param {number} url - The url of button image
+// @param {number} x - The x coordinate of button image
+// @param {number} y - The y coordinate of button image
+// @param {number} width - The width of button image
+// @param {number} height - The height of button image
+function Button(url, x, y, width, height) {
+    this.sprite = url;
+    this.x = x;
+    this.y = y;
+    this.width = width;
+    this.height = height;
+    this.activated = false;
+}
+
+// Draw the button on the screen
+Button.prototype.render = function() {
+    ctx.clearRect(this.x, this.y, this.width, this.height);
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+};
+
+// Instantiate enemies, player and buttons objects.
 var allEnemies = [
-    new Enemy(-101,10,80),
-    new Enemy(-101,92,150),
-    new Enemy(-101,174,200),
-    new Enemy(-101,10,120),
-    new Enemy(-101,92,280),
-    new Enemy(-101,174,140)
+    new Enemy(-101, 10, 80),
+    new Enemy(-101, 92, 150),
+    new Enemy(-101, 174, 200),
+    new Enemy(-101, 10, 120),
+    new Enemy(-101, 92, 280),
+    new Enemy(-101, 174, 140)
 ];
-var player = new Player(200,330);
+var player = new Player(200, 330);
+
+var startBtn = new Button('images/start-0.png', 178, 200, 149, 46);
+var startBtnActivated = new Button('images/start-1.png', 178, 200, 149, 46);
+var againBtn = new Button('images/again-0.png', 124, 320, 257, 53);
+var againBtnActivated = new Button('images/again-1.png', 124, 320, 257, 53);
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method.

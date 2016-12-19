@@ -4,12 +4,12 @@
  * render methods on your player and enemy objects (defined in your app.js).
  */
 
-/* Predefine the variables we'll be using globally, and add the canvas
+/* Predefine the variables that will be used globally, and add the canvas
  * element to the DOM.
  */
 var canvas = document.createElement('canvas');
 var ctx = canvas.getContext('2d');
-var clicked = false;
+var gameStart = false; // Keep track of game state (start or not)
 
 canvas.width = 505;
 canvas.height = 498;
@@ -49,13 +49,13 @@ function engine() {
          * When player reaches the water, the loop stops, we enter the
          * winning state and player goes back to the initial position.
          */
-         if (player.y > -50) {
+        if (player.y > -50) {
             window.requestAnimationFrame(main);
-         } else {
+        } else {
             win();
             player.x = 200;
             player.y = 330;
-         }
+        }
     }
 
     /* This function is called by main (our game loop) and itself calls all
@@ -92,7 +92,7 @@ function engine() {
     }
 
     // This function serves as collision detection algorithm.
-    function boundingBoxCollide(player,enemy) {
+    function boundingBoxCollide(player, enemy) {
         //Player bounding box
         var left1 = player.x + 36;
         var right1 = player.x + 68;
@@ -124,17 +124,17 @@ function engine() {
      */
     function render() {
         //Clear out
-        ctx.clearRect(0,0,canvas.width,canvas.height);
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
         /* This array holds the relative URL to the image used
          * for that particular row of the game level.
          */
         var rowImages = [
-                'images/water-block.png',   // Top row is water
-                'images/stone-block.png',   // Row 1 of 3 of stone
-                'images/stone-block.png',   // Row 2 of 3 of stone
-                'images/stone-block.png',   // Row 3 of 3 of stone
-                'images/grass-block.png',   // Row 1 of 2 of grass
-                'images/grass-block.png'    // Row 2 of 2 of grass
+                'images/water-block.png', // Top row is water
+                'images/stone-block.png', // Row 1 of 3 of stone
+                'images/stone-block.png', // Row 2 of 3 of stone
+                'images/stone-block.png', // Row 3 of 3 of stone
+                'images/grass-block.png', // Row 1 of 2 of grass
+                'images/grass-block.png' // Row 2 of 2 of grass
             ],
             numRows = 6,
             numCols = 5,
@@ -177,22 +177,23 @@ function engine() {
  * by loading or refreshing the webpage.
  */
 function start() {
-    ctx.fillStyle = 'rgba(255,255,255,0.5)';
-    ctx.fillRect(0,0,canvas.width,canvas.height);
-    ctx.fillStyle = '#5b5';
-    ctx.font = 'bold 20px Arial';
+    ctx.fillStyle = '#fff';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    // Draw game leading information
+    ctx.fillStyle = '#363636';
+    ctx.font = 'bold 20px Dekko, cursive';
     ctx.textAlign = 'center';
-    ctx.lineWidth = 3;
-    ctx.fillText("You are in danger...", canvas.width / 2, 100);
-    ctx.fillText("Only escape the enemies and cross the street", canvas.width / 2, 130);
-    ctx.fillText("to the water, you can be saved...", canvas.width / 2, 160);
-    ctx.font = 'bold 48px Impact';
-    ctx.fillText("START", canvas.width / 2, 280);
-    ctx.strokeText("START", canvas.width / 2, 280);
+    ctx.fillText("You are in danger...", canvas.width / 2, 50);
+    ctx.fillText("Only escape the enemies and cross the street", canvas.width / 2, 80);
+    ctx.fillText("to the water, you can be saved...", canvas.width / 2, 110);
 
-    howToPlay(90, 400, 20);
+    // Draw start button
+    startBtn.render();
 
-    ctx.drawImage(Resources.get(player.sprite), 300, 340);
+    howToPlay(110, 380, 20);
+
+    ctx.drawImage(Resources.get(player.sprite), 300, 320);
 
     /* It draws the how-to-play part of the game introduction.
      * @param {number} x - The x coordinate of starting position
@@ -201,12 +202,13 @@ function start() {
      */
     function howToPlay(x, y, c) {
         ctx.beginPath();
-        ctx.font = '16px Arial';
+        ctx.font = 'bold 16px Dekko, cursive';
         ctx.textAlign = 'left';
+        ctx.fillStyle = '#363636';
         ctx.fillText('HOW TO PLAY:', x - 40, y - 50);
         ctx.fillText('Click to start the game', x - 40, y - 30);
         ctx.fillText('Use arrow keys to help the player escape the enemies', x - 40, y - 10);
-        drawArrowKey(x,y,c);
+        drawArrowKey(x, y, c);
     }
 
     /* It draws the arrow key on the canvas
@@ -214,21 +216,21 @@ function start() {
      * @param {number} y - The y coordinate of starting position
      * @param {number} c - The base length of triangle
      */
-    function drawArrowKey(x,y,c) {
+    function drawArrowKey(x, y, c) {
         ctx.beginPath();
         ctx.moveTo(x + 2.5 * c, y);
         ctx.lineTo(x + 3 * c, y + c);
-        ctx.lineTo(x +2 * c, y + c);
+        ctx.lineTo(x + 2 * c, y + c);
         ctx.closePath();
 
         ctx.moveTo(x + 4 * c, y + 1.5 * c);
         ctx.lineTo(x + 5 * c, y + 2 * c);
-        ctx.lineTo(x +4 * c, y + 2.5 * c);
+        ctx.lineTo(x + 4 * c, y + 2.5 * c);
         ctx.closePath();
 
         ctx.moveTo(x + 3 * c, y + 3 * c);
         ctx.lineTo(x + 2.5 * c, y + 4 * c);
-        ctx.lineTo(x +2 * c, y + 3 * c);
+        ctx.lineTo(x + 2 * c, y + 3 * c);
         ctx.closePath();
 
         ctx.moveTo(x + c, y + 2.5 * c);
@@ -236,30 +238,32 @@ function start() {
         ctx.lineTo(x, y + 2 * c);
         ctx.closePath();
 
+        ctx.fillStyle = '#5b5';
         ctx.fill();
     }
 }
 
-/* This function serves as the player win state. It's called when
+/* This function serves as the player win state (game is over). It's called when
  * player reaches the water.
  */
 function win() {
-    //Firstly, the clicked variable is reset to false, waiting for next click.
-    clicked = false;
+    // Game is over, the gameStart variable is reset to false, waiting for next start.
+    gameStart = false;
 
-    ctx.fillStyle = 'rgba(255,255,255,0.5)';
-    ctx.fillRect(0,0,canvas.width,canvas.height);
+    ctx.fillStyle = 'rgba(255,255,255,0.7)';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
     ctx.font = 'bold 48px Impact';
-    ctx.fillStyle = '#fff';
+    ctx.fillStyle = '#5b5';
     ctx.lineWidth = 3;
     ctx.textAlign = 'center';
-    ctx.fillText("CONGRATULATIONS!", canvas.width / 2, 200);
-    ctx.strokeText("CONGRATULATIONS!", canvas.width / 2, 200);
-    ctx.fillText("YOU WIN!", canvas.width / 2, 280);
-    ctx.strokeText("YOU WIN!", canvas.width / 2, 280);
-    ctx.fillStyle = '#5b5';
-    ctx.fillText("PLAY AGAIN", canvas.width / 2, 400);
-    ctx.strokeText("PLAY AGAIN", canvas.width / 2, 400);
+    ctx.fillText("CONGRATULATIONS!", canvas.width / 2, 170);
+    ctx.strokeText("CONGRATULATIONS!", canvas.width / 2, 170);
+    ctx.fillText("YOU WIN!", canvas.width / 2, 250);
+    ctx.strokeText("YOU WIN!", canvas.width / 2, 250);
+
+    // Draw play-again button
+    againBtn.render();
 }
 
 /* Load all of the images which are needed in this game. When all of
@@ -271,20 +275,58 @@ Resources.load([
     'images/grass-block.png',
     'images/enemy-bug.png',
     'images/enemy-bug-r.png',
-    'images/char-boy.png'
+    'images/char-boy.png',
+    'images/start-0.png',
+    'images/start-1.png',
+    'images/again-0.png',
+    'images/again-1.png'
 ]);
-Resources.onReady(function(){
+Resources.onReady(function() {
     start();
 });
 
-/* Listen to the click event on the canvas object. When player clicks within
- * the canvas, engine function will be called. Condition statement can avoid
- * repeated call with click in succession.
+/* Listen to the mousemove event on the canvas object. When mouse moves within
+ * the range of button, the button will be on focus and be redrawed.
  */
-canvas.addEventListener('click', function(e) {
-    if (clicked === false) {
-        clicked = true;
-        engine();
+canvas.addEventListener('mousemove', function(e) {
+    // Point the real position of mouse on canvas object
+    var x = event.pageX - canvas.offsetLeft;
+    var y = event.pageY - canvas.offsetTop;
+
+    // If game does not start and start button is not activated,
+    // start button will become focused.
+    // If game is over and play-again botton is not activated,
+    // play-again will become focused.
+    // If conditions above are not satisfied, there is no focus on the canvas.
+    if (gameStart === false && startBtn.activated === false) {
+        if ((x > startBtn.x && x < startBtn.x + startBtn.width) && (y > startBtn.y && y < startBtn.y + startBtn.height)) {
+            canvas.classList.add('focused');
+            startBtnActivated.render();
+        } else {
+            canvas.classList.remove('focused');
+            startBtn.render();
+        }
+    } else if (gameStart === false && againBtn.activated === false) {
+        if ((x > againBtn.x && x < againBtn.x + againBtn.width) && (y > againBtn.y && y < againBtn.y + againBtn.height)) {
+            canvas.classList.add('focused');
+            againBtnActivated.render();
+        } else {
+            canvas.classList.remove('focused');
+            againBtn.render();
+        }
+    } else {
+        canvas.classList.remove('focused');
     }
 });
 
+/* Listen to the click event on the canvas object. When player clicks within
+ * the canvas, if game does not start, engine function will work. Condition statement can avoid
+ * repeated call with click in succession.
+ */
+canvas.addEventListener('click', function(e) {
+    if (gameStart === false) {
+        gameStart = true;
+        startBtn.activated = true;
+        engine();
+    }
+});
