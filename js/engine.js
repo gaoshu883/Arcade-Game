@@ -182,7 +182,7 @@ function start() {
 
     // Draw game leading information
     ctx.fillStyle = '#363636';
-    ctx.font = 'bold 20px Dekko, cursive';
+    ctx.font = '20px Impact';
     ctx.textAlign = 'center';
     ctx.fillText("You are in danger...", canvas.width / 2, 50);
     ctx.fillText("Only escape the enemies and cross the street", canvas.width / 2, 80);
@@ -191,7 +191,7 @@ function start() {
     // Draw start button
     startBtn.render();
 
-    howToPlay(110, 380, 20);
+    howToPlay(115, 380, 20);
 
     ctx.drawImage(Resources.get(player.sprite), 300, 320);
 
@@ -202,7 +202,7 @@ function start() {
      */
     function howToPlay(x, y, c) {
         ctx.beginPath();
-        ctx.font = 'bold 16px Dekko, cursive';
+        ctx.font = '16px Impact';
         ctx.textAlign = 'left';
         ctx.fillStyle = '#363636';
         ctx.fillText('HOW TO PLAY:', x - 40, y - 50);
