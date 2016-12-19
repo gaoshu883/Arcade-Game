@@ -111,12 +111,14 @@ Button.prototype.render = function() {
 
 // Instantiate enemies, player and buttons objects.
 var allEnemies = [
-    new Enemy(-101, 10, 80),
-    new Enemy(-101, 92, 150),
-    new Enemy(-101, 174, 200),
-    new Enemy(-101, 10, 120),
-    new Enemy(-101, 92, 280),
-    new Enemy(-101, 174, 140)
+    new Enemy(-101, 10, 200),
+    new Enemy(-101, 92, 120),
+    new Enemy(-101, 174, 320),
+    new Enemy(-101, 10, 300),
+    new Enemy(-101, 92, 180),
+    new Enemy(-101, 174, 260),
+    new Enemy(-101, 10, 260),
+    new Enemy(-101, 174, 200)
 ];
 var player = new Player(200, 330);
 
