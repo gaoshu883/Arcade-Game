@@ -320,11 +320,11 @@ canvas.addEventListener('mousemove', function(e) {
 });
 
 /* Listen to the click event on the canvas object. When player clicks within
- * the canvas, if game does not start, engine function will work. Condition statement can avoid
- * repeated call with click in succession.
+ * the canvas, if game does not start, engine function will work. Condition
+ * statement can avoid repeated call with click in succession.
  */
 canvas.addEventListener('click', function(e) {
-    if (gameStart === false) {
+    if (canvas.classList.contains('focused') === true && gameStart === false) {
         gameStart = true;
         startBtn.activated = true;
         engine();
